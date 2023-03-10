@@ -1,6 +1,22 @@
 steps:
-- name: gcr.io/cloud-builders/packer
+# Packer Installation
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: 'bash'
+  args: ['-c', 'curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -']
+
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: 'bash'
+  args: ['-c', 'sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"']
+
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: 'bash'
+  args: ['-c', 'sudo apt-get update && sudo apt-get install packer']
+
+# Packer Build
+- name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  entrypoint: 'bash'
   args: ['build', 'example.json']
+
 options:
   logging : CLOUD_LOGGING_ONLY
 timeout: 1600s
