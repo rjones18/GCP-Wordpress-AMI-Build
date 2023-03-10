@@ -1,7 +1,6 @@
 steps:
-- name: Packer AMI Build
-  entrypoint: 'bash'
-  args: ['-c', 'packer build example.json']
+- name: gcr.io/cloud-builders/packer
+  args: ['build', 'example.json']
 options:
   logging : CLOUD_LOGGING_ONLY
 timeout: 1600s
