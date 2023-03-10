@@ -1,0 +1,3 @@
+steps:
+- name: gcr.io/cloud-builders/packer
+  args: ['build', 'packer-config.json']
