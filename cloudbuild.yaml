@@ -1,23 +1,9 @@
 steps:
-# Packer Installation
-- name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args: ['-c', 'curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -']
-
-- name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args: ['-c', 'sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"']
-
-- name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args: ['-c', 'sudo apt-get update && sudo apt-get install packer']
-
-# Packer Build
-- name: gcr.io/cloud-builders/docker
-  entrypoint: 'bash'
-  args: ['build', 'example.json']
-
-options:
-  logging : CLOUD_LOGGING_ONLY
-timeout: 1600s
+- name: 'hashicorp/packer:1.7.6'
+  entrypoint: packer
+  args: ['build', '-var', 'project_id=$PROJECT_ID', 'wordpress.json']
+  env:
+  - 'PACKER_LOG=1'
+  - 'PACKER_LOG_PATH=packer.log'
+  timeout: 3600s
 
