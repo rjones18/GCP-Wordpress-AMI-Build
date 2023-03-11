@@ -2,10 +2,6 @@ steps:
 - name: 'hashicorp/packer:1.7.6'
   entrypoint: packer
   args: ['build', '-var', 'project_id=$PROJECT_ID', 'wordpress.json']
-  env:
-  - 'PACKER_LOG=1'
-  - 'PACKER_LOG_PATH=packer.log'
-  timeout: 3600s
   
   options:
   logging : CLOUD_LOGGING_ONLY
