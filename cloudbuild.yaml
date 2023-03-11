@@ -1,7 +1,7 @@
 steps:
 - name: 'hashicorp/packer:1.7.6'
   entrypoint: 'bash'
-  args: ['-c', 'apt install ansible']
+  args: ['-c', 'yum install ansible']
 
 - name: 'hashicorp/packer:1.7.6'
   entrypoint: packer
