@@ -5,9 +5,9 @@ steps:
   env:
   - 'PACKER_LOG=1'
   - 'PACKER_LOG_PATH=packer.log'
-  timeout: 1600s
+  timeout: 2600s
   
 options:
   logging : CLOUD_LOGGING_ONLY
-timeout: 1600s
+timeout: 2600s
 
