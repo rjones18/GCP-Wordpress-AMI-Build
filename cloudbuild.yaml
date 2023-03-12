@@ -1,5 +1,5 @@
 steps:
-- name: 'hashicorp/packer:1.7.6'
+- name: 'gcr.io/packer-ansible-base-image-gcr'
   entrypoint: packer
   args: ['build', '-var', 'project_id=$PROJECT_ID', 'wordpress.json']
   env:
