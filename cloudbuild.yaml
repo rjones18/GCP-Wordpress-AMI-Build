@@ -1,5 +1,5 @@
 steps:
-- name: 'gcr.io/alert-flames-286515/packer-ansible-base-image-gcr:latest'
+- name: 'gcr.io/alert-flames-286515/packer-ansible-base-image-gcr'
   entrypoint: packer
   args: ['build', '-var', 'project_id=$PROJECT_ID', 'wordpress.json']
   env:
