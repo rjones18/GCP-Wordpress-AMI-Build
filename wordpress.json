@@ -13,7 +13,7 @@
     "machine_type": "{{user `machine_type`}}",
     "zone": "{{user `zone`}}",
     "image_name": "{{user `image_name`}}",
-    "ssh_username": "reggiej3939"
+    "ssh_username": "root"
   }],
   "provisioners": [{
     "type": "ansible",
