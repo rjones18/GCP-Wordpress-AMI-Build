@@ -1,8 +1,8 @@
 ---
 - hosts: default
+      vars:
+        ansible_remote_tmp: /var/tmp
   become: true
-    vars:
-    ansible_remote_tmp: /var/tmp
   tasks:
     - name: Update apt-get(yum in centos) repository
       apt:
