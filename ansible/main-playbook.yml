@@ -4,6 +4,9 @@
   vars:
     ansible_remote_tmp: /var/tmp
   tasks:
+    - name: Remove Lock
+      ansible.builtin.shell: sudo rm /var/lib/dpkg/lock
+    
     - name: Update apt-get(yum in centos) repository
       apt:
         update_cache: yes
