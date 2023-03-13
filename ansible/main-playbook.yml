@@ -11,7 +11,10 @@
       ansible.builtin.shell: yes | sudo apt-get install apache2 php php-mysql php-curl mysql-client libapache2-mod-php unzip nano
 
     - name: Download latest version of Wordpress from site and unzip file
-      ansible.builtin.shell: cd /var/www/ && sudo wget https://wordpress.org/latest.zip && sudo unzip latest.zip
+      ansible.builtin.shell: cd /var/www/ && sudo wget https://wordpress.org/latest.zip && sudo unzip latest.zip 
+
+    - name: Update wordpress path permissions
+      ansible.builtin.shell: sudo chown -R www-data:www-data /var/www/wordpress && sudo chmod -R 755 /var/www/wordpress  
 
     - name: Add Wp-config file to Server
       template:
@@ -29,5 +32,5 @@
        name: apache2
        state: restarted
     
-    - name: Update permissions
-      ansible.builtin.shell: sudo chown -R www-data:www-data /var/www/wordpress
+    # - name: Update permissions
+    #   ansible.builtin.shell: sudo chown -R www-data:www-data /var/www/wordpress
