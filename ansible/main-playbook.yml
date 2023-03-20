@@ -1,20 +1,27 @@
 ---
 - hosts: default
   become: true
-  vars:
-    ansible_remote_tmp: /var/tmp
   tasks:
     - name: Update apt-get(yum in centos) repository
-      ansible.builtin.shell: sudo apt-get update
-    
+      apt:
+        update_cache: yes
+
     - name: Install apache2 along with other packages
-      ansible.builtin.shell: yes | sudo apt-get install apache2 php php-mysql php-curl mysql-client libapache2-mod-php unzip nano
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+      loop:
+        - apache2
+        - php
+        - php-mysql
+        - php-curl
+        - mysql-client
+        - libapache2-mod-php
+        - unzip
+        - nano
 
     - name: Download latest version of Wordpress from site and unzip file
-      ansible.builtin.shell: cd /var/www/ && sudo wget https://wordpress.org/latest.zip && sudo unzip latest.zip 
-
-    - name: Update wordpress path permissions
-      ansible.builtin.shell: sudo chown -R www-data:www-data /var/www/wordpress 
+      ansible.builtin.shell: cd /var/www/ && sudo wget https://wordpress.org/latest.zip && sudo unzip latest.zip
 
     - name: Add Wp-config file to Server
       template:
@@ -32,5 +39,5 @@
        name: apache2
        state: restarted
     
-    # - name: Update permissions
-    #   ansible.builtin.shell: sudo chown -R www-data:www-data /var/www/wordpress
+    - name: Update permissions
+      ansible.builtin.shell: sudo chown -R www-data:www-data /var/www/wordpress
