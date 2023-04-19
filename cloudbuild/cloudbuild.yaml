@@ -20,7 +20,7 @@ steps:
 # Run Packer with Ansible provisioner
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: '/workspace/packer'
-  args: ['build', '-var', 'ansible_playbook_path=/workspace/playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'packer.json']
+  args: ['build', '-var', 'ansible_playbook_path=/workspace/ansible/main-playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'wordpress.json']
 
 
 
