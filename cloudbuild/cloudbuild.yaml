@@ -2,8 +2,9 @@ steps:
 # Install Packer
 - name: 'gcr.io/cloud-builders/wget'
   args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_linux_amd64.zip', '-O', '/tmp/packer.zip']
-- name: 'gcr.io/cloud-builders/unzip'
-  args: ['/tmp/packer.zip', '-d', '/tmp']
+- name: 'alpine'
+  entrypoint: 'unzip'
+  args: ['-o', '/tmp/packer.zip', '-d', '/tmp']
 - name: 'gcr.io/cloud-builders/wget'
   args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_SHA256SUMS', '-O', '/tmp/packer_SHA256SUMS']
 - name: 'gcr.io/cloud-builders/sha256sum'
