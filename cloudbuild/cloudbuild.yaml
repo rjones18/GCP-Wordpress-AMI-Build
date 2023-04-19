@@ -12,8 +12,6 @@ steps:
 - name: 'busybox'
   entrypoint: 'sha256sum'
   args: ['/workspace/packer']
-- name: 'gcr.io/cloud-builders/gsutil'
-  args: ['cp', '/workspace/packer', '/workspace']
 
 # Install Ansible
 - name: 'gcr.io/cloud-builders/docker'
@@ -23,6 +21,7 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: '/workspace/packer'
   args: ['build', '-var', 'ansible_playbook_path=/workspace/playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'packer.json']
+
 
 
 
