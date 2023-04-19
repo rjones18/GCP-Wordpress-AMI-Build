@@ -15,9 +15,11 @@
     "image_name": "{{user `image_name`}}",
     "ssh_username": "ubuntu"
   }],
-  "provisioners": [{
+  "provisioners": [
+    {
     "type": "ansible",
     "playbook_file": "./ansible/main-playbook.yml"
-  }]
+  }
+]
 }
 
