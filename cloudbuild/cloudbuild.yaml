@@ -1,15 +1,15 @@
 steps:
 # Install Packer
 - name: 'gcr.io/cloud-builders/wget'
-  args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_linux_amd64.zip', '-O', '/tmp/packer.zip']
+  args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_linux_amd64.zip', '-O', '/workspace/packer.zip']
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '--rm', '-v', '/tmp:/tmp', 'alpine', '/bin/sh', '-c', 'apk add --no-cache unzip && unzip -o /tmp/packer.zip -d /tmp']
+  args: ['run', '--rm', '-v', '/workspace:/workspace', 'alpine', '/bin/sh', '-c', 'apk add --no-cache unzip && unzip -o /workspace/packer.zip -d /workspace']
 - name: 'gcr.io/cloud-builders/wget'
-  args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_SHA256SUMS', '-O', '/tmp/packer_SHA256SUMS']
+  args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_SHA256SUMS', '-O', '/workspace/packer_SHA256SUMS']
 - name: 'gcr.io/cloud-builders/sha256sum'
-  args: ['-c', '--ignore-missing', '/tmp/packer_SHA256SUMS']
+  args: ['-c', '--ignore-missing', '/workspace/packer_SHA256SUMS']
 - name: 'gcr.io/cloud-builders/gsutil'
-  args: ['cp', '/tmp/packer', '/workspace']
+  args: ['cp', '/workspace/packer', '/workspace']
 
 # Install Ansible
 - name: 'gcr.io/cloud-builders/docker'
@@ -18,7 +18,8 @@ steps:
 # Run Packer with Ansible provisioner
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: '/workspace/packer'
-  args: ['build', '-var', 'ansible_playbook_path=/workspace/playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'packer.json']
+  args: ['build', '-var', 'ansible_playbook_path=/workspace/main-playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'wordpress.json']
+
 
 
 
