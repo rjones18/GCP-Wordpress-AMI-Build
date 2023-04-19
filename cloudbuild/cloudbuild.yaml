@@ -6,7 +6,8 @@ steps:
   args: ['run', '--rm', '-v', '/workspace:/workspace', 'alpine', '/bin/sh', '-c', 'apk add --no-cache unzip && unzip -o /workspace/packer.zip -d /workspace']
 - name: 'gcr.io/cloud-builders/wget'
   args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_SHA256SUMS', '-O', '/workspace/packer_SHA256SUMS']
-- name: 'gcr.io/cloud-builders/sha256sum'
+- name: 'busybox'
+  entrypoint: 'sha256sum'
   args: ['-c', '--ignore-missing', '/workspace/packer_SHA256SUMS']
 - name: 'gcr.io/cloud-builders/gsutil'
   args: ['cp', '/workspace/packer', '/workspace']
@@ -18,7 +19,8 @@ steps:
 # Run Packer with Ansible provisioner
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: '/workspace/packer'
-  args: ['build', '-var', 'ansible_playbook_path=/workspace/main-playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'wordpress.json']
+  args: ['build', '-var', 'ansible_playbook_path=/workspace/ansible/main-playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'wordpress.json']
+
 
 
 
