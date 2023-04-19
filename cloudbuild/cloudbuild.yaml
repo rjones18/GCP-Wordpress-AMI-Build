@@ -19,3 +19,7 @@ steps:
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: '/workspace/packer'
   args: ['build', '-var', 'ansible_playbook_path=/workspace/ansible/main-playbook.yml', '-var', 'ansible_roles_path=/workspace/roles', 'wordpress.json']
+
+options:
+  logging : CLOUD_LOGGING_ONLY
+timeout: 1600s
