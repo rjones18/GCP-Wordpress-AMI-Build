@@ -6,6 +6,57 @@
       apt:
         update_cache: yes
 
+    - name: Download Stackdriver repo setup script
+      get_url:
+        url: https://dl.google.com/cloudagents/add-monitoring-agent-repo.sh
+        dest: /tmp/add-monitoring-agent-repo.sh
+        mode: '0755'
+
+    - name: Run Stackdriver repo setup script
+      command: sudo bash /tmp/add-monitoring-agent-repo.sh
+
+    - name: Install Cloud Monitoring Agent
+      apt:
+        name: stackdriver-agent
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Start Cloud Monitoring Agent
+      service:
+        name: stackdriver-agent
+        state: started
+      become: yes
+
+    - name: Download Cloud Logging repo setup script
+      get_url:
+        url: https://dl.google.com/cloudagents/add-logging-agent-repo.sh
+        dest: /tmp/add-logging-agent-repo.sh
+        mode: '0755'
+
+    - name: Run Cloud Logging repo setup script
+      command: sudo bash /tmp/add-logging-agent-repo.sh
+
+    - name: Install Cloud Logging Agent
+      apt:
+        name: google-fluentd
+        state: present
+        update_cache: yes
+      become: yes
+
+    - name: Install some common plugins
+      apt:
+        name: google-fluentd-catch-all-config-structured
+        state: present
+      become: yes
+
+    - name: Start Cloud Logging Agent
+      service:
+        name: google-fluentd
+        state: started
+      become: yes
+
+
     - name: Install apache2 along with other packages
       apt:
         name: "{{ item }}"
