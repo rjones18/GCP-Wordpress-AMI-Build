@@ -56,7 +56,6 @@
         state: started
       become: yes
 
-
     - name: Install apache2 along with other packages
       apt:
         name: "{{ item }}"
