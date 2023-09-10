@@ -17,10 +17,12 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['run', '--rm', '-v', '/workspace:/workspace', 'python:3.8', '/bin/sh', '-c', 'pip install ansible && cp -r /usr/local/lib/python3.8/site-packages /workspace/ansible']
 
-  # Step 3: Build the image using Packer
+# Run Packer with Ansible provisioner
 - name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: '/workspace/packer'
-  args: ['build', './wordpress.json']
+  entrypoint: '/bin/bash'
+  args:
+    - '-c'
+    - 'export NEW_PATH=$PATH:/workspace/ansible/bin && $NEW_PATH/packer build -var "ansible_playbook_path=/workspace/playbook.yml" -var "ansible_roles_path=/workspace/roles" packer.json'
 
 options:
   logging : CLOUD_LOGGING_ONLY
