@@ -1,29 +1,35 @@
 steps:
-# Install Packer
-- name: 'gcr.io/cloud-builders/wget'
-  args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_linux_amd64.zip', '-O', '/workspace/packer.zip']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '--rm', '-v', '/workspace:/workspace', 'alpine', '/bin/sh', '-c', 'apk add --no-cache unzip && unzip -o /workspace/packer.zip -d /workspace']
-- name: 'gcr.io/cloud-builders/wget'
-  args: ['https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_SHA256SUMS', '-O', '/workspace/packer_SHA256SUMS']
-- name: 'busybox'
-  entrypoint: 'cat'
-  args: ['/workspace/packer_SHA256SUMS']
-- name: 'busybox'
-  entrypoint: 'sha256sum'
-  args: ['/workspace/packer']
+# Use Cloud Shell image to Install Packer
+- name: 'gcr.io/cloudshell-images/cloudshell:latest'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    apt-get update && apt-get install -y wget unzip
+    wget https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_linux_amd64.zip -O /workspace/packer.zip
+    unzip -o /workspace/packer.zip -d /workspace
 
 # Install Ansible
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['run', '--rm', '-v', '/workspace:/workspace', 'python:3.8', '/bin/sh', '-c', 'pip install ansible && cp -r /usr/local/lib/python3.8/site-packages /workspace/ansible']
+  args: 
+  - 'run'
+  - '--rm'
+  - '-v'
+  - '/workspace:/workspace'
+  - 'python:3.8'
+  - '/bin/sh'
+  - '-c'
+  - 'pip install ansible && cp -r /usr/local/lib/python3.8/site-packages /workspace/ansible'
 
 # Run Packer with Ansible provisioner
-- name: 'gcr.io/cloud-builders/gcloud'
-  entrypoint: '/bin/bash'
+- name: 'gcr.io/cloudshell-images/cloudshell:latest'
+  entrypoint: 'bash'
   args:
-    - '-c'
-    - 'export NEW_PATH=$PATH:/workspace/ansible/bin && $NEW_PATH/packer build -var "ansible_playbook_path=/workspace/playbook.yml" -var "ansible_roles_path=/workspace/roles" packer.json'
+  - '-c'
+  - |
+    export NEW_PATH=$PATH:/workspace/ansible/bin 
+    $NEW_PATH/packer build -var "ansible_playbook_path=/workspace/playbook.yml" -var "ansible_roles_path=/workspace/roles" packer.json
 
 options:
-  logging : CLOUD_LOGGING_ONLY
+  logging: CLOUD_LOGGING_ONLY
 timeout: 1600s
