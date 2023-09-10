@@ -28,7 +28,7 @@ steps:
   - '-c'
   - |
     export NEW_PATH=$_PATH:/workspace/ansible/bin 
-    $_NEW_PATH/packer build -var "ansible_playbook_path=/workspace/main-playbook.yml" -var "ansible_roles_path=/workspace/roles" wordpress.json
+    $_NEW_PATH/. build -var "ansible_playbook_path=/workspace/main-playbook.yml" -var "ansible_roles_path=/workspace/roles" wordpress.json
 
 options:
   logging: CLOUD_LOGGING_ONLY
